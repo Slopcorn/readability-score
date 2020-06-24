@@ -64,8 +64,10 @@ public class Main {
         int sents = sentCount(text);
         int words = wordCount(text);
         int chars = charCount(text);
-        int sylls = syllCount(text);
-        int polys = polyCount(text);
+
+        String[] wordArr = text.toLowerCase().split("\\W+");    // Imperfect
+        int sylls = syllCount(wordArr);
+        int polys = polyCount(wordArr);
 
         // Scores
         double ari      = automatedReadabilityIndex(chars, words, sents);
@@ -165,19 +167,27 @@ public class Main {
     }
 
     /** Finds the amount of syllables in the text.
-     * @param text The input text as String.
+     * @param words The list of words in the text.
      * @return The amount of syllables.
      */
-    private static int syllCount(String text) {
-        return 0;   // TODO: implement me
+    private static int syllCount(String[] words) {
+        int sylls = 0;
+        for (String word : words) {
+            sylls += syllables(word);
+        }
+        return sylls;
     }
 
     /** Finds the amount of polysyllabic words in the text.
-     * @param text The input text as String.
+     * @param words The list of words in the text.
      * @return The amount of polysyllabic words.
      */
-    private static int polyCount(String text) {
-        return 0;   // TODO: implement me
+    private static int polyCount(String[] words) {
+        int polys = 0;
+        for (String word : words) if (syllables(word) > 1) {
+            polys++;
+        }
+        return polys;
     }
 
     /** Finds out how many syllables a certain word has.
