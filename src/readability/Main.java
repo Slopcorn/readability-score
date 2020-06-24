@@ -47,6 +47,11 @@ public class Main {
         System.out.println(readingLevelARI(ari));
     }
 
+    /** Returns the description of the reading age necessary for reading a text
+     * based on its ARI score.
+     * @param ari ARI score of a given text.
+     * @return Description of the necessary reading age.
+     */
     private static String readingLevelARI(double ari) {
         String age = null;      // Horrendous
         if (ari > 13) age = "24+";
@@ -67,6 +72,10 @@ public class Main {
         return "This text should be understood by " + age + " year olds.";
     }
 
+    /** Finds the amount of sentences in a text.
+     * @param text The input text as String.
+     * @return The amount of sentences in a text.
+     */
     private static int sentCount(String text) {
         int sents = 0;
         for (String sentCand : text.split("[.!?]")) {
