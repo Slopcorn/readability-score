@@ -73,35 +73,55 @@ public class Main {
         System.out.printf("Words: %d\n", words);
         System.out.printf("Sentences: %d\n", sents);
         System.out.printf("Characters: %d\n", chars);
+        // TODO: Syllables
+        // TODO: Polysyllables
 
-        System.out.printf("The score is: %.2f\n", ari);
-        System.out.println(readingLevelARI(ari));
+        System.out.print("Enter the score you wish to calculate (ARI, FK, SMOG, CL, all): ");
+
+        // TODO: finish the switch mechanics
+        switch (new Scanner(System.in).next()) {
+            case "ARI":
+                System.out.printf("Automated Readability Index: %.2f (about %d year olds).\n", ari, readingLevel(ari));
+                break;
+            case "FK":
+                // TODO: implement FK
+                break;
+            case "SMOG":
+                // TODO: implement SMOG
+                break;
+            case "CL":
+                // TODO: implement CL
+                break;
+            case "all":
+                // TODO: implement the rest
+                break;
+            default:
+                System.out.println("No such index exists, aborting...");
+                break;
+        }
     }
 
-    /** Returns the description of the reading age necessary for reading a text
-     * based on its ARI score.
-     * @param ari ARI score of a given text.
-     * @return Description of the necessary reading age.
+    /** Returns the reading age necessary for reading a text based on its readability index.
+     * @param score Readability score of a given text.
+     * @return Upper bound of reading age necessary.
      */
-    private static String readingLevelARI(double ari) {
-        String age = switch ((int) Math.ceil(ari)) {
-            case 1 -> "5-6";
-            case 2 -> "6-7";
-            case 3 -> "7-9";
-            case 4 -> "9-10";
-            case 5 -> "10-11";
-            case 6 -> "11-12";
-            case 7 -> "12-13";
-            case 8 -> "13-14";
-            case 9 -> "14-15";
-            case 10 -> "15-16";
-            case 11 -> "16-17";
-            case 12 -> "17-18";
-            case 13 -> "18-24";
-            default -> "24+";
+    private static int readingLevel(double score) {
+        return switch ((int) Math.round(score)) {
+            case 1 -> 6;
+            case 2 -> 7;
+            case 3 -> 9;
+            case 4 -> 10;
+            case 5 -> 11;
+            case 6 -> 12;
+            case 7 -> 13;
+            case 8 -> 14;
+            case 9 -> 15;
+            case 10 -> 16;
+            case 11 -> 17;
+            case 12 -> 18;
+            case 13 -> 24;
+            default -> 25; // This MAY not be quite right.
         };
-
-        return "This text should be understood by " + age + " year olds.";
     }
 
     /** Finds the amount of sentences in a text.
