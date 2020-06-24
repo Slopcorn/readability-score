@@ -205,7 +205,7 @@ public class Main {
         // subtracting this value from the maximum index.
         int end = word.charAt(word.length() - 1) == 'e' ? 1 : 0;
 
-        // Now we simply count syllables that do not directly follow one another.
+        // Now we simply count groups of vowels.
         for (int i = 0; i < word.length() - end; i++) {
             char c = word.charAt(i);
             if (isIn(c, vowels) && !inVowel) {          // Newly meeting a vowel
