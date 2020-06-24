@@ -29,19 +29,15 @@ public class Main {
      * @param text Input text string.
      */
     private static void printTextInformation(String text) {
-        // Split to find all the sentences in the text.
-        String[] sentences = text.split("[.!?]");
-
         // Counters for sentences and words
-        int sents = sentences.length;
-        int words = wordCount(sentences);
-        int chars = charCount(sentences);
+        int sents = sentCount(text);
+        int words = wordCount(text);
+        int chars = charCount(text);
 
         double ari = automatedReadabilityIndex(chars, words, sents);
 
         System.out.println("The text is:");
         System.out.println(text);
-        System.out.println();
 
         System.out.printf("Words: %d\n", words);
         System.out.printf("Sentences: %d\n", sents);
@@ -55,14 +51,26 @@ public class Main {
         // TODO: implement me
     }
 
-    private static int wordCount(String[] sentences) {
+    private static int sentCount(String text) {
         // TODO: implement me
         return 0;
     }
 
-    private static int charCount(String[] sentences) {
+    private static int wordCount(String text) {
         // TODO: implement me
         return 0;
+    }
+
+    /** Finds the amount of visible characters in the text.
+     * @param text The input text as String.
+     * @return The amount of visible chars (in regular text).
+     */
+    private static int charCount(String text) {
+        int chars = 0;
+        for (char c : text.toCharArray()) {
+            if (!Character.isWhitespace(c)) chars++;
+        }
+        return chars;
     }
 
     /** Gets all of the text from a scanner.
