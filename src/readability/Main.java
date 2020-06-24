@@ -44,6 +44,18 @@ public class Main {
         return 1.043 * Math.sqrt(polysyllables * 30.0 / sents) + 3.1291;
     }
 
+    /** Calculates the Coleman-Liau index.
+     * @param chars The amount of characters in the text, not counting whitespace.
+     * @param words The amount of words in the text.
+     * @param sents The amount of sentences in the text.
+     * @return The Coleman-Liau index of the text.
+     */
+    private static double colemanLiau(int chars, int words, int sents) {
+        double l = 100.0 * chars / words;   // Average number of characters per 100 words.
+        double s = 100.0 * sents / words;   // Average number of sentences  per 100 words.
+        return 0.0588 * l - 0.296 * s - 15.8;
+    }
+
     /** Gets and prints relevant information about input text.
      * @param text Input text string.
      */
