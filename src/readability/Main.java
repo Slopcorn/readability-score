@@ -48,10 +48,10 @@ public class Main {
         System.out.printf("Characters: %d\n", chars);
 
         System.out.printf("The score is: %f.2\n", ari);
-        printReadingLevelARI();
+        printReadingLevelARI(ari);
     }
 
-    private static void printReadingLevelARI() {
+    private static void printReadingLevelARI(double ari) {
         // TODO: implement me
     }
 
