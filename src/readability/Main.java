@@ -46,12 +46,18 @@ public class Main {
         System.out.println(words / sents > 10 ? "HARD" : "EASY");
     }
 
-    /** TODO: Gets all of the text from a scanner.
+    /** Gets all of the text from a scanner.
      * @param scanner Input scanner.
      * @return A string containing all of the text.
      */
     private static String getFileText(Scanner scanner) {
-        // update me
-        return scanner.nextLine();
+        StringBuilder sb = new StringBuilder();
+
+        while (scanner.hasNextLine()) {
+            sb.append(scanner.nextLine());
+            sb.append('\n');
+        }
+
+        return sb.toString();
     }
 }
