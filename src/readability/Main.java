@@ -43,7 +43,7 @@ public class Main {
         System.out.printf("Sentences: %d\n", sents);
         System.out.printf("Characters: %d\n", chars);
 
-        System.out.printf("The score is: %f.2\n", ari);
+        System.out.printf("The score is: %.2f\n", ari);
         printReadingLevelARI(ari);
     }
 
