@@ -21,29 +21,48 @@ public class Main {
      * @param sents The amount of sentences in the text.
      * @return The automated readability index of the text.
      */
-    private double automatedReadabilityIndex(int chars, int words, int sents) {
+    private static double automatedReadabilityIndex(int chars, int words, int sents) {
         return 4.71 * chars / words + 0.5 * words / sents - 21.43;
     }
 
-    /** TODO: Gets and prints relevant information about input text.
+    /** Gets and prints relevant information about input text.
      * @param text Input text string.
      */
     private static void printTextInformation(String text) {
-        // update me
         // Split to find all the sentences in the text.
         String[] sentences = text.split("[.!?]");
 
         // Counters for sentences and words
         int sents = sentences.length;
-        int words = 0;
+        int words = wordCount(sentences);
+        int chars = charCount(sentences);
 
-        // Find wordcount
-        for (String sentence : sentences) {
-            words += sentence.split(" ").length;
-        }
+        double ari = automatedReadabilityIndex(chars, words, sents);
 
+        System.out.println("The text is:");
         System.out.println(text);
-        System.out.println(words / sents > 10 ? "HARD" : "EASY");
+        System.out.println();
+
+        System.out.printf("Words: %d\n", words);
+        System.out.printf("Sentences: %d\n", sents);
+        System.out.printf("Characters: %d\n", chars);
+
+        System.out.printf("The score is: %f.2\n", ari);
+        printReadingLevelARI();
+    }
+
+    private static void printReadingLevelARI() {
+        // TODO: implement me
+    }
+
+    private static int wordCount(String[] sentences) {
+        // TODO: implement me
+        return 0;
+    }
+
+    private static int charCount(String[] sentences) {
+        // TODO: implement me
+        return 0;
     }
 
     /** Gets all of the text from a scanner.
