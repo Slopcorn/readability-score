@@ -64,8 +64,13 @@ public class Main {
         int sents = sentCount(text);
         int words = wordCount(text);
         int chars = charCount(text);
+        int sylls = 0;      // TODO: Syllables
+        int polys = 0;      // TODO: Polysyllables
 
-        double ari = automatedReadabilityIndex(chars, words, sents);
+        double ari      = automatedReadabilityIndex(chars, words, sents);
+        double flesch   = fleschKincaid(words, sylls, sents);
+        double smog     = smogIndex(polys, sents);
+        double coleman  = colemanLiau(chars, words, sents);
 
         System.out.println("The text is:");
         System.out.println(text);
@@ -73,31 +78,26 @@ public class Main {
         System.out.printf("Words: %d\n", words);
         System.out.printf("Sentences: %d\n", sents);
         System.out.printf("Characters: %d\n", chars);
-        // TODO: Syllables
-        // TODO: Polysyllables
+        System.out.printf("Syllables: %d\n", sylls);
+        System.out.printf("Polysyllables: %d\n", polys);
 
         System.out.print("Enter the score you wish to calculate (ARI, FK, SMOG, CL, all): ");
 
-        // TODO: finish the switch mechanics
         switch (new Scanner(System.in).next()) {
-            case "ARI":
+            case "ARI" -> System.out.printf("Automated Readability Index: %.2f (about %d year olds).\n", ari, readingLevel(ari));
+            case "FK" -> System.out.printf("Flesch–Kincaid readability tests: %.2f (about %d year olds).\n", flesch, readingLevel(flesch));
+            case "SMOG" -> System.out.printf("Simple Measure of Gobbledygook: %.2f (about %d year olds).\n", smog, readingLevel(smog));
+            case "CL" -> System.out.printf("Coleman–Liau index: %.2f (about %d year olds).\n", coleman, readingLevel(coleman));
+            case "all" -> {
+                double avgAge = (readingLevel(ari) + readingLevel(flesch) + readingLevel(smog) + readingLevel(coleman)) / 4.0;
                 System.out.printf("Automated Readability Index: %.2f (about %d year olds).\n", ari, readingLevel(ari));
-                break;
-            case "FK":
-                // TODO: implement FK
-                break;
-            case "SMOG":
-                // TODO: implement SMOG
-                break;
-            case "CL":
-                // TODO: implement CL
-                break;
-            case "all":
-                // TODO: implement the rest
-                break;
-            default:
-                System.out.println("No such index exists, aborting...");
-                break;
+                System.out.printf("Flesch–Kincaid readability tests: %.2f (about %d year olds).\n", flesch, readingLevel(flesch));
+                System.out.printf("Simple Measure of Gobbledygook: %.2f (about %d year olds).\n", smog, readingLevel(smog));
+                System.out.printf("Coleman–Liau index: %.2f (about %d year olds).\n", coleman, readingLevel(coleman));
+                System.out.println();
+                System.out.printf("This text should be understood in average by %.2f year olds.", avgAge);
+            }
+            default -> System.out.println("No such index exists, aborting...");
         }
     }
 
