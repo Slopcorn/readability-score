@@ -56,9 +56,19 @@ public class Main {
         return 0;
     }
 
+    /** Finds the amount of words in a text.
+     * @param text The input text as String.
+     * @return The amount of words in the text.
+     */
     private static int wordCount(String text) {
-        // TODO: implement me
-        return 0;
+        int words = 0;
+        // There are more of "word candidates"...
+        String[] wordArray = text.split("[\t\n .!?]");
+        // Naive check
+        for (String word : wordArray) {
+            if (!"".equals(word)) words++;
+        }
+        return words;
     }
 
     /** Finds the amount of visible characters in the text.
