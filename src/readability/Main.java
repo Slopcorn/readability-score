@@ -53,21 +53,22 @@ public class Main {
      * @return Description of the necessary reading age.
      */
     private static String readingLevelARI(double ari) {
-        String age = null;      // Horrendous
-        if (ari > 13) age = "24+";
-        else if (ari > 12) age = "18-24";
-        else if (ari > 11) age = "17-18";
-        else if (ari > 10) age = "16-17";
-        else if (ari > 9) age = "15-16";
-        else if (ari > 8) age = "14-15";
-        else if (ari > 7) age = "13-14";
-        else if (ari > 6) age = "12-13";
-        else if (ari > 5) age = "11-12";
-        else if (ari > 4) age = "10-11";
-        else if (ari > 3) age = "9-10";
-        else if (ari > 2) age = "7-9";
-        else if (ari > 1) age = "6-7";
-        else if (ari >= 0) age = "5-6";
+        String age = switch ((int) Math.ceil(ari)) {
+            case 1 -> "5-6";
+            case 2 -> "6-7";
+            case 3 -> "7-9";
+            case 4 -> "9-10";
+            case 5 -> "10-11";
+            case 6 -> "11-12";
+            case 7 -> "12-13";
+            case 8 -> "13-14";
+            case 9 -> "14-15";
+            case 10 -> "15-16";
+            case 11 -> "16-17";
+            case 12 -> "17-18";
+            case 13 -> "18-24";
+            default -> "24+";
+        };
 
         return "This text should be understood by " + age + " year olds.";
     }
