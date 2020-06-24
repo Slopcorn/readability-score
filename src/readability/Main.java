@@ -20,11 +20,10 @@ public class Main {
      */
     private static void printTextInformation(String text) {
         // Counters for sentences and words
+        String[] wordArr = text.toLowerCase().split("\\W+");
         int sents = sentCount(text);
-        int words = wordCount(text);
+        int words = wordArr.length;
         int chars = charCount(text);
-
-        String[] wordArr = text.toLowerCase().split("\\W+");    // Imperfect
         int sylls = syllCount(wordArr);
         int polys = polyCount(wordArr);
 
@@ -34,35 +33,34 @@ public class Main {
         double smog     = smogIndex(polys, sents);
         double coleman  = colemanLiau(chars, words, sents);
 
+        // Ages
+        int ariAge  = readingLevel(ari);
+        int fkAge   = readingLevel(flesch);
+        int smogAge = readingLevel(smog);
+        int clAge   = readingLevel(coleman);
+        double avgAge = (ariAge + fkAge + smogAge + clAge) / 4f;
+
         // Text printout
         System.out.println("The text is:");
         System.out.println(text);
 
         // Text basic information
+        System.out.println("Basic information about the text");
         System.out.printf("Words: %d\n", words);
         System.out.printf("Sentences: %d\n", sents);
         System.out.printf("Characters: %d\n", chars);
         System.out.printf("Syllables: %d\n", sylls);
         System.out.printf("Polysyllables: %d\n", polys);
 
-        // Method choice and information printout
-        System.out.print("Enter the score you wish to calculate (ARI, FK, SMOG, CL, all): ");
-        switch (new Scanner(System.in).next()) {
-            case "ARI" -> System.out.printf("Automated Readability Index: %.2f (about %d year olds).\n", ari, readingLevel(ari));
-            case "FK" -> System.out.printf("Flesch–Kincaid readability tests: %.2f (about %d year olds).\n", flesch, readingLevel(flesch));
-            case "SMOG" -> System.out.printf("Simple Measure of Gobbledygook: %.2f (about %d year olds).\n", smog, readingLevel(smog));
-            case "CL" -> System.out.printf("Coleman–Liau index: %.2f (about %d year olds).\n", coleman, readingLevel(coleman));
-            case "all" -> {
-                double avgAge = (readingLevel(ari) + readingLevel(flesch) + readingLevel(smog) + readingLevel(coleman)) / 4.0;
-                System.out.printf("Automated Readability Index: %.2f (about %d year olds).\n", ari, readingLevel(ari));
-                System.out.printf("Flesch–Kincaid readability tests: %.2f (about %d year olds).\n", flesch, readingLevel(flesch));
-                System.out.printf("Simple Measure of Gobbledygook: %.2f (about %d year olds).\n", smog, readingLevel(smog));
-                System.out.printf("Coleman–Liau index: %.2f (about %d year olds).\n", coleman, readingLevel(coleman));
-                System.out.println();
-                System.out.printf("This text should be understood in average by %.2f year olds.", avgAge);
-            }
-            default -> System.out.println("No such index exists, aborting...");
-        }
+        System.out.println();
+        System.out.println("Information derived by readability score indices");
+        System.out.println("Method\tScore\tAge");
+        System.out.printf("ARI\t\t%.2f\t%d\n", ari, ariAge);
+        System.out.printf("FK\t\t%.2f\t%d\n", flesch, fkAge);
+        System.out.printf("SMOG\t%.2f\t%d\n", smog, smogAge);
+        System.out.printf("CL\t\t%.2f\t%d\n", coleman, clAge);
+
+        System.out.printf("avg\t\t\t\t%.2f\n", avgAge);
     }
 
     /** Calculates the ARI.
@@ -111,22 +109,36 @@ public class Main {
      * @return Upper bound of reading age necessary.
      */
     private static int readingLevel(double score) {
-        return switch ((int) Math.round(score)) {
-            case 1 -> 6;
-            case 2 -> 7;
-            case 3 -> 9;
-            case 4 -> 10;
-            case 5 -> 11;
-            case 6 -> 12;
-            case 7 -> 13;
-            case 8 -> 14;
-            case 9 -> 15;
-            case 10 -> 16;
-            case 11 -> 17;
-            case 12 -> 18;
-            case 13 -> 24;
-            default -> 25;
-        };
+        switch ((int) Math.round(score)) {
+            case 1:
+                return 6;
+            case 2:
+                return 7;
+            case 3:
+                return 9;
+            case 4:
+                return 10;
+            case 5:
+                return 11;
+            case 6:
+                return 12;
+            case 7:
+                return 13;
+            case 8:
+                return 14;
+            case 9:
+                return 15;
+            case 10:
+                return 16;
+            case 11:
+                return 17;
+            case 12:
+                return 18;
+            case 13:
+                return 24;
+            default:
+                return 25;
+        }
     }
 
     /** Finds the amount of sentences in a text.
@@ -135,23 +147,11 @@ public class Main {
      */
     private static int sentCount(String text) {
         int sents = 0;
-        for (String sentCand : text.split("[.!?]")) {
+        for (String sentCand : text.split("[.!?]+")) {
             // Naive check, newline necessary because we add it necessarily after every line on input.
             if (!"".equals(sentCand) && !"\n".equals(sentCand)) sents++;
         }
         return sents;
-    }
-
-    /** Finds the amount of words in a text.
-     * @param text The input text as String.
-     * @return The amount of words in the text.
-     */
-    private static int wordCount(String text) {
-        int words = 0;
-        for (String wordCand : text.split("[\t\n .!?]")) {
-            if (!"".equals(wordCand)) words++;  // Naive check
-        }
-        return words;
     }
 
     /** Finds the amount of visible characters in the text.
