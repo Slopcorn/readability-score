@@ -64,25 +64,28 @@ public class Main {
         int sents = sentCount(text);
         int words = wordCount(text);
         int chars = charCount(text);
-        int sylls = 0;      // TODO: Syllables
-        int polys = 0;      // TODO: Polysyllables
+        int sylls = syllCount(text);
+        int polys = polyCount(text);
 
+        // Scores
         double ari      = automatedReadabilityIndex(chars, words, sents);
         double flesch   = fleschKincaid(words, sylls, sents);
         double smog     = smogIndex(polys, sents);
         double coleman  = colemanLiau(chars, words, sents);
 
+        // Text printout
         System.out.println("The text is:");
         System.out.println(text);
 
+        // Text basic information
         System.out.printf("Words: %d\n", words);
         System.out.printf("Sentences: %d\n", sents);
         System.out.printf("Characters: %d\n", chars);
         System.out.printf("Syllables: %d\n", sylls);
         System.out.printf("Polysyllables: %d\n", polys);
 
+        // Method choice and information printout
         System.out.print("Enter the score you wish to calculate (ARI, FK, SMOG, CL, all): ");
-
         switch (new Scanner(System.in).next()) {
             case "ARI" -> System.out.printf("Automated Readability Index: %.2f (about %d year olds).\n", ari, readingLevel(ari));
             case "FK" -> System.out.printf("Flesch–Kincaid readability tests: %.2f (about %d year olds).\n", flesch, readingLevel(flesch));
@@ -159,6 +162,30 @@ public class Main {
             if (!Character.isWhitespace(c)) chars++;
         }
         return chars;
+    }
+
+    /** Finds the amount of syllables in the text.
+     * @param text The input text as String.
+     * @return The amount of syllables.
+     */
+    private static int syllCount(String text) {
+        return 0;   // TODO: implement me
+    }
+
+    /** Finds the amount of polysyllabic words in the text.
+     * @param text The input text as String.
+     * @return The amount of polysyllabic words.
+     */
+    private static int polyCount(String text) {
+        return 0;   // TODO: implement me
+    }
+
+    /** Finds out how many syllables a certain word has.
+     * @param word A single word as a string.
+     * @return The amount of syllables in the word.
+     */
+    private static int syllables(String word) {
+        return 0;   // TODO: implement me
     }
 
     /** Gets all of the text from a scanner.
