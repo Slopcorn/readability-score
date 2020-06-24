@@ -35,6 +35,15 @@ public class Main {
         return 0.39 * words / sents + 11.8 * syllables / words - 15.59;
     }
 
+    /** Calculates the SMOG index.
+     * @param polysyllables The amount of polysyllabic words in the text.
+     * @param sents The amount of sentences in the text.
+     * @return The SMOG index.
+     */
+    private static double smogIndex(int polysyllables, int sents) {
+        return 1.043 * Math.sqrt(polysyllables * 30.0 / sents) + 3.1291;
+    }
+
     /** Gets and prints relevant information about input text.
      * @param text Input text string.
      */
