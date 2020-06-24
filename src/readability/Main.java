@@ -25,6 +25,16 @@ public class Main {
         return 4.71 * chars / words + 0.5 * words / sents - 21.43;
     }
 
+    /** Calculates the Flesch-Kincaid readability index.
+     * @param words The amount of words in the text.
+     * @param syllables The amount of syllables in the text.
+     * @param sents The amount of sentences in the text.
+     * @return The Flesch-Kincaid score of the text.
+     */
+    private static double fleschKincaid(int words, int syllables, int sents) {
+        return 0.39 * words / sents + 11.8 * syllables / words - 15.59;
+    }
+
     /** Gets and prints relevant information about input text.
      * @param text Input text string.
      */
