@@ -15,47 +15,6 @@ public class Main {
         }
     }
 
-    /** Calculates the ARI.
-     * @param chars The amount of characters in the text, not counting whitespace.
-     * @param words The amount of words in the text.
-     * @param sents The amount of sentences in the text.
-     * @return The automated readability index of the text.
-     */
-    private static double automatedReadabilityIndex(int chars, int words, int sents) {
-        return 4.71 * chars / words + 0.5 * words / sents - 21.43;
-    }
-
-    /** Calculates the Flesch-Kincaid readability index.
-     * @param words The amount of words in the text.
-     * @param syllables The amount of syllables in the text.
-     * @param sents The amount of sentences in the text.
-     * @return The Flesch-Kincaid score of the text.
-     */
-    private static double fleschKincaid(int words, int syllables, int sents) {
-        return 0.39 * words / sents + 11.8 * syllables / words - 15.59;
-    }
-
-    /** Calculates the SMOG index.
-     * @param polysyllables The amount of polysyllabic words in the text.
-     * @param sents The amount of sentences in the text.
-     * @return The SMOG index.
-     */
-    private static double smogIndex(int polysyllables, int sents) {
-        return 1.043 * Math.sqrt(polysyllables * 30.0 / sents) + 3.1291;
-    }
-
-    /** Calculates the Coleman-Liau index.
-     * @param chars The amount of characters in the text, not counting whitespace.
-     * @param words The amount of words in the text.
-     * @param sents The amount of sentences in the text.
-     * @return The Coleman-Liau index of the text.
-     */
-    private static double colemanLiau(int chars, int words, int sents) {
-        double l = 100.0 * chars / words;   // Average number of characters per 100 words.
-        double s = 100.0 * sents / words;   // Average number of sentences  per 100 words.
-        return 0.0588 * l - 0.296 * s - 15.8;
-    }
-
     /** Gets and prints relevant information about input text.
      * @param text Input text string.
      */
@@ -106,6 +65,47 @@ public class Main {
         }
     }
 
+    /** Calculates the ARI.
+     * @param chars The amount of characters in the text, not counting whitespace.
+     * @param words The amount of words in the text.
+     * @param sents The amount of sentences in the text.
+     * @return The automated readability index of the text.
+     */
+    private static double automatedReadabilityIndex(int chars, int words, int sents) {
+        return 4.71 * chars / words + 0.5 * words / sents - 21.43;
+    }
+
+    /** Calculates the Flesch-Kincaid readability index.
+     * @param words The amount of words in the text.
+     * @param syllables The amount of syllables in the text.
+     * @param sents The amount of sentences in the text.
+     * @return The Flesch-Kincaid score of the text.
+     */
+    private static double fleschKincaid(int words, int syllables, int sents) {
+        return 0.39 * words / sents + 11.8 * syllables / words - 15.59;
+    }
+
+    /** Calculates the SMOG index.
+     * @param polysyllables The amount of polysyllabic words in the text.
+     * @param sents The amount of sentences in the text.
+     * @return The SMOG index.
+     */
+    private static double smogIndex(int polysyllables, int sents) {
+        return 1.043 * Math.sqrt(polysyllables * 30.0 / sents) + 3.1291;
+    }
+
+    /** Calculates the Coleman-Liau index.
+     * @param chars The amount of characters in the text, not counting whitespace.
+     * @param words The amount of words in the text.
+     * @param sents The amount of sentences in the text.
+     * @return The Coleman-Liau index of the text.
+     */
+    private static double colemanLiau(int chars, int words, int sents) {
+        double l = 100.0 * chars / words;   // Average number of characters per 100 words.
+        double s = 100.0 * sents / words;   // Average number of sentences  per 100 words.
+        return 0.0588 * l - 0.296 * s - 15.8;
+    }
+
     /** Returns the reading age necessary for reading a text based on its readability index.
      * @param score Readability score of a given text.
      * @return Upper bound of reading age necessary.
@@ -125,7 +125,7 @@ public class Main {
             case 11 -> 17;
             case 12 -> 18;
             case 13 -> 24;
-            default -> 25; // This MAY not be quite right.
+            default -> 25;
         };
     }
 
@@ -184,18 +184,50 @@ public class Main {
      */
     private static int polyCount(String[] words) {
         int polys = 0;
-        for (String word : words) if (syllables(word) > 1) {
+        for (String word : words) if (syllables(word) > 2) {
             polys++;
         }
         return polys;
     }
 
     /** Finds out how many syllables a certain word has.
+     *  Input is assumed to be lowercase.
      * @param word A single word as a string.
      * @return The amount of syllables in the word.
      */
     private static int syllables(String word) {
-        return 0;   // TODO: implement me
+        int     syllables = 0;
+        boolean inVowel   = false;
+        char[]  vowels    = {'a', 'e', 'i', 'o', 'u', 'y'};
+
+        // I will use this to simplify logic further in.
+        // If the end is an 'e', I simply ignore the e later on by
+        // subtracting this value from the maximum index.
+        int end = word.charAt(word.length() - 1) == 'e' ? 1 : 0;
+
+        // Now we simply count syllables that do not directly follow one another.
+        for (int i = 0; i < word.length() - end; i++) {
+            char c = word.charAt(i);
+            if (isIn(c, vowels) && !inVowel) {          // Newly meeting a vowel
+                inVowel = true;
+                syllables++;
+            } else if (!isIn(c, vowels) && inVowel) {   // Newly meeting a non-vowel
+                inVowel = false;
+            }
+        }
+
+        // If we did not read any syllables, say the word is monosyllabic.
+        return syllables == 0 ? 1 : syllables;
+    }
+
+    /** Method to check if a character is in an array of characters.
+     * @param c Input character.
+     * @param chArray Array that we check for the character.
+     * @return Boolean value stating if the character is in the array.
+     */
+    private static boolean isIn(char c, char[] chArray) {
+        for (char c1 : chArray) if (c1 == c) return true;
+        return false;
     }
 
     /** Gets all of the text from a scanner.
