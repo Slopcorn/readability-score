@@ -52,8 +52,12 @@ public class Main {
     }
 
     private static int sentCount(String text) {
-        // TODO: implement me
-        return 0;
+        int sents = 0;
+        for (String sentCand : text.split("[.!?]")) {
+            // Naive check, newline necessary because we add it necessarily after every line on input.
+            if (!"".equals(sentCand) && !"\n".equals(sentCand)) sents++;
+        }
+        return sents;
     }
 
     /** Finds the amount of words in a text.
@@ -62,11 +66,8 @@ public class Main {
      */
     private static int wordCount(String text) {
         int words = 0;
-        // There are more of "word candidates"...
-        String[] wordArray = text.split("[\t\n .!?]");
-        // Naive check
-        for (String word : wordArray) {
-            if (!"".equals(word)) words++;
+        for (String wordCand : text.split("[\t\n .!?]")) {
+            if (!"".equals(wordCand)) words++;  // Naive check
         }
         return words;
     }
